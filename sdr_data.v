@@ -19,7 +19,7 @@ module sdr_data(
     output            data_valid;
     inout  [15:0]     data_bus;
     inout   [3:0]     sdr_DQ;
-
+ 
 
     reg [15:0]  regSdrDQ;
     reg         enable_sysD;

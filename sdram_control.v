@@ -25,7 +25,7 @@
 	input        		addrs;
 	input        		delay_100us;
 	input        		ref_req;
-  output  reg     cy_end;
+  output  reg         cy_end;
 	output  reg         ref_ack;
 	output  reg         init_done;
 	output  reg [3:0]   istate;
@@ -33,7 +33,7 @@
 	output  reg [3:0]   clk_count;
 
     
-    reg     syncResetclk; // timing is met then the clock is reset
+    reg     syncResetclk; 
 
 
   `define endOf_tRP          clk_count == NUM_CLK_tRP
@@ -134,12 +134,14 @@ always @(posedge clk or posedge reset)
      ref_ack <= #tDLY 0;
   end else
     case (cstate)
-      c_idle:
+      c_idle:begin
          if (ref_req && init_done) ref_ack <= #tDLY 1;
          else ref_ack <= #tDLY 0;
-      c_AR:
+       end
+      c_AR:begin
          if (NUM_CLK_tRFC == 0) ref_ack <= #tDLY 0;
          else ref_ack <= #tDLY 1;
+       end
       default:
          ref_ack <= #tDLY 0;
     endcase
@@ -151,10 +153,11 @@ always @(posedge clk or posedge reset)
      cy_end <= #tDLY 1;
   end else
     case (cstate)
-      c_idle:
+      c_idle:begin
          if (ref_req && init_done) cy_end <= #tDLY 1;
          else if (!addrs && init_done) cy_end <= #tDLY 0;
          else cy_end <= #tDLY 1;
+       end
       c_ACTIVE,
       c_tRCD,
       c_READA,
